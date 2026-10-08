@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: 'zulu'
           java-version: '17'
 
       - name: Set up Flutter
@@ -27,17 +27,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Build APK via Flet
-        run: flet build apk --module-name ui
+        run: |
+          flet build apk --module-name ui --no-interactive --verbose
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BirmarketBot-release.apk
+          name: app-release
           path: build/apk/*.apk
