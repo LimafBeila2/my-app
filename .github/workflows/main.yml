@@ -34,7 +34,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build APK via Flet
-        run: flet build apk
+        run: flet build apk --module-name ui
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
