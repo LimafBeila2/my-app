@@ -34,12 +34,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Build APK via Flet
+      - name: Create Flet Flutter project
         run: |
-          flet build apk --module-name ui -v
+          flet build apk --module-name ui -v || true
+
+      - name: Build APK via Flutter
+        run: |
+          cd build/apk
+          flutter build apk --release
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release
-          path: build/apk/*.apk
+          path: build/apk/build/app/outputs/flutter-apk/app-release.apk
